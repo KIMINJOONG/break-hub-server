@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { CreateSearchTagDto } from './dto/create-searchTags.dto.ts';
 import { UpdateSearchTagDto } from './dto/update-searchTags.dto';
 import { SearchTag } from './searchTag.entity';
@@ -16,6 +24,11 @@ export class SearchTagsController {
   @Get('/:seq')
   getOne(@Param('seq') seq: number): Promise<SearchTag> {
     return this.searchTagsService.getOne(seq);
+  }
+
+  @Delete('/:seq')
+  remove(@Param('seq') searchTagSeq: number) {
+    return this.searchTagsService.deleteOne(searchTagSeq);
   }
 
   @Post()

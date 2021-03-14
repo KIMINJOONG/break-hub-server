@@ -26,6 +26,14 @@ export class BoardsService {
     } catch (error) {}
   }
 
+  async deleteOne(boardSeq: number): Promise<Board> {
+    try {
+      const board: Board = await this.getOne(boardSeq);
+      await board.remove();
+      return board;
+    } catch (error) {}
+  }
+
   async create(boardData: CreateBoardDto): Promise<Board> {
     try {
       const board: Board = Board.create({

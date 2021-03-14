@@ -25,6 +25,14 @@ export class SearchTagsService {
     } catch (error) {}
   }
 
+  async deleteOne(searchTagSeq: number): Promise<SearchTag> {
+    try {
+      const searchTag: SearchTag = await this.getOne(searchTagSeq);
+      await searchTag.remove();
+      return searchTag;
+    } catch (error) {}
+  }
+
   async create(searchTagData: CreateSearchTagDto): Promise<SearchTag> {
     try {
       const searchTag: SearchTag = SearchTag.create(searchTagData);
