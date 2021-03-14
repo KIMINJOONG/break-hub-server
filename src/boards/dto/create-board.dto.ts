@@ -1,4 +1,4 @@
-import { IsArray, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsString } from 'class-validator';
 
 export class CreateBoardDto {
   @IsString()
@@ -12,4 +12,7 @@ export class CreateBoardDto {
 
   @IsArray()
   readonly searchTagSeqs: number[];
+
+  @IsNumber()
+  readonly categorySeq: number;
 }

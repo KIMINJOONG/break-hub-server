@@ -6,9 +6,11 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Category } from '../categories/category.entity';
 
 @Entity()
 export class Board extends BaseEntity {
@@ -27,6 +29,9 @@ export class Board extends BaseEntity {
   @ManyToMany(() => SearchTag, (searchTag) => searchTag.boards)
   @JoinTable()
   searchTags: SearchTag[];
+
+  @ManyToOne(() => Category, (category) => category.boards)
+  category: Category;
 
   @CreateDateColumn()
   createdAt: Date;

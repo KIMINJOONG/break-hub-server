@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { SearchTagsService } from 'src/searchTags/searchTags.service';
+import { CategoriesService } from '../categories/categories.service';
+import { SearchTagsService } from '../searchTags/searchTags.service';
 import { BoardsController } from './boards.controller';
 import { BoardsService } from './boards.service';
 
 @Module({
   controllers: [BoardsController],
-  providers: [BoardsService, SearchTagsService],
+  providers: [BoardsService, SearchTagsService, CategoriesService],
 })
 export class BoardsModule {}
