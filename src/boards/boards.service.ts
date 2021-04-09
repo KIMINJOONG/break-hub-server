@@ -70,6 +70,7 @@ export class BoardsService {
 
   async update(seq: number, updateData: UpdateBoardDto): Promise<Board> {
     try {
+      console.log('seq :', seq);
       const board: Board = await this.getOne(seq);
       const searchTags: SearchTag[] = [];
       for (const searchTagSeq of updateData.searchTagSeqs) {
@@ -78,6 +79,7 @@ export class BoardsService {
           searchTags.push(searchTag);
         }
       }
+
       board.title = updateData.title;
       board.content = updateData.content;
       board.videoUrl = updateData.videoUrl;
@@ -85,6 +87,8 @@ export class BoardsService {
       await board.save();
 
       return board;
-    } catch (error) {}
+    } catch (error) {
+      return;
+    }
   }
 }
