@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { BasicResponseFormat, IBasicResponse } from 'src/responseData';
 import { CreateSearchTagDto } from './dto/create-searchTags.dto.ts';
 import { UpdateSearchTagDto } from './dto/update-searchTags.dto';
 import { SearchTag } from './searchTag.entity';
@@ -25,11 +26,13 @@ export class SearchTagsService {
     } catch (error) {}
   }
 
-  async deleteOne(searchTagSeq: number): Promise<SearchTag> {
+  async deleteOne(searchTagSeq: number): Promise<IBasicResponse<SearchTag>> {
     try {
       const searchTag: SearchTag = await this.getOne(searchTagSeq);
       await searchTag.remove();
-      return searchTag;
+      searchTag.seq = searchTagSeq;
+      const response = BasicResponseFormat(200, '삭제되었습니다', searchTag);
+      return response;
     } catch (error) {}
   }
 
@@ -42,11 +45,15 @@ export class SearchTagsService {
       console.log(error);
     }
   }
-  async update(searchTagSeq: number, updateData: UpdateSearchTagDto) {
+  async update(
+    searchTagSeq: number,
+    updateData: UpdateSearchTagDto,
+  ): Promise<IBasicResponse<SearchTag>> {
     try {
       const searchTag: SearchTag = await this.getOne(searchTagSeq);
       SearchTag.update({ seq: searchTag.seq }, { ...updateData });
-      return searchTag;
+      const response = BasicResponseFormat(200, '수정되었습니다', searchTag);
+      return response;
     } catch (error) {}
   }
 }

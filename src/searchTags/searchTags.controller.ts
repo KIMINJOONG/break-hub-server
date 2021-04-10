@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { IBasicResponse } from 'src/responseData';
 import { CreateSearchTagDto } from './dto/create-searchTags.dto.ts';
 import { UpdateSearchTagDto } from './dto/update-searchTags.dto';
 import { SearchTag } from './searchTag.entity';
@@ -27,7 +28,9 @@ export class SearchTagsController {
   }
 
   @Delete('/:seq')
-  remove(@Param('seq') searchTagSeq: number) {
+  remove(
+    @Param('seq') searchTagSeq: number,
+  ): Promise<IBasicResponse<SearchTag>> {
     return this.searchTagsService.deleteOne(searchTagSeq);
   }
 
@@ -40,7 +43,7 @@ export class SearchTagsController {
   patch(
     @Param('seq') searchTagSeq: number,
     @Body() updateData: UpdateSearchTagDto,
-  ) {
+  ): Promise<IBasicResponse<SearchTag>> {
     return this.searchTagsService.update(searchTagSeq, updateData);
   }
 }
