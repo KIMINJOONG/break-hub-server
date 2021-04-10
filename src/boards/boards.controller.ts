@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { IBasicResponse } from 'src/responseData';
 import { Board } from './board.entity';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -32,7 +33,7 @@ export class BoardsController {
   }
 
   @Post()
-  create(@Body() boardData: CreateBoardDto): Promise<Board> {
+  create(@Body() boardData: CreateBoardDto): Promise<IBasicResponse<Board>> {
     return this.boardsService.create(boardData);
   }
 

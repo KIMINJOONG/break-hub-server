@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { BasicResponseFormat, IBasicResponse } from 'src/responseData';
 import { CategoriesService } from '../categories/categories.service';
 import { SearchTag } from '../searchTags/searchTag.entity';
 import { SearchTagsService } from '../searchTags/searchTags.service';
@@ -42,7 +43,7 @@ export class BoardsService {
     } catch (error) {}
   }
 
-  async create(boardData: CreateBoardDto): Promise<Board> {
+  async create(boardData: CreateBoardDto): Promise<IBasicResponse<Board>> {
     try {
       const board: Board = Board.create({
         title: boardData.title,
@@ -51,9 +52,7 @@ export class BoardsService {
         searchTags: [],
       });
 
-      const category = await this.categoriesService.getOne(
-        boardData.categorySeq,
-      );
+      const category = await this.categoriesService.getOne(1);
       board.category = category;
 
       for (const searchTagSeq of boardData.searchTagSeqs) {
@@ -61,7 +60,8 @@ export class BoardsService {
         board.searchTags.push(searchTag);
       }
       await board.save();
-      return board;
+      const response = BasicResponseFormat(200, '등록되었습니다.', board);
+      return response;
     } catch (error) {
       console.log(error);
       return;
