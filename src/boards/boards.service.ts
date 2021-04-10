@@ -45,10 +45,14 @@ export class BoardsService {
 
   async create(boardData: CreateBoardDto): Promise<IBasicResponse<Board>> {
     try {
+      const regExp = /^(?:https?:\/\/)?(?:www\.)?(?:(?:youtube.com\/(?:(?:watch\?v=)|(?:embed\/))([a-zA-Z0-9-]{11}))|(?:youtu.be\/([a-zA-Z0-9-]{11})))/;
+      const matchVideoId = boardData.videoUrl.match(regExp);
       const board: Board = Board.create({
         title: boardData.title,
         content: boardData.content,
-        videoUrl: boardData.videoUrl,
+        videoUrl: matchVideoId
+          ? matchVideoId[1] || matchVideoId[2]
+          : boardData.videoUrl,
         searchTags: [],
       });
 
