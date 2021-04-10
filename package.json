@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "pm2-start": "npx nest build && pm2 start npm --name 'server' -- start",
+    "pm2-start": "PRODUCTION=true npx nest build && pm2 start npm --name 'server' -- start",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
