@@ -28,7 +28,7 @@ export class BoardsController {
   }
 
   @Delete('/:seq')
-  remove(@Param('seq') boardSeq: number) {
+  remove(@Param('seq') boardSeq: number): Promise<IBasicResponse<Board>> {
     return this.boardsService.deleteOne(boardSeq);
   }
 
@@ -38,7 +38,10 @@ export class BoardsController {
   }
 
   @Patch('/:seq')
-  patch(@Param('seq') boardSeq: number, @Body() updateData: UpdateBoardDto) {
+  patch(
+    @Param('seq') boardSeq: number,
+    @Body() updateData: UpdateBoardDto,
+  ): Promise<IBasicResponse<Board>> {
     return this.boardsService.update(boardSeq, updateData);
   }
 }

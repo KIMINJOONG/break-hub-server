@@ -17,7 +17,10 @@ export class SearchTag extends BaseEntity {
   @Column()
   name: string;
 
-  @ManyToMany(() => Board, (board) => board.searchTags)
+  @ManyToMany(() => Board, (board) => board.searchTags, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   boards: Board[];
 
   @CreateDateColumn()

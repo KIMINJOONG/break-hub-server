@@ -35,11 +35,12 @@ export class BoardsService {
     }
   }
 
-  async deleteOne(boardSeq: number): Promise<Board> {
+  async deleteOne(boardSeq: number): Promise<IBasicResponse<Board>> {
     try {
       const board: Board = await this.getOne(boardSeq);
       await board.remove();
-      return board;
+      const response = BasicResponseFormat(200, '삭제되었습니다.', board);
+      return response;
     } catch (error) {}
   }
 
@@ -72,9 +73,11 @@ export class BoardsService {
     }
   }
 
-  async update(seq: number, updateData: UpdateBoardDto): Promise<Board> {
+  async update(
+    seq: number,
+    updateData: UpdateBoardDto,
+  ): Promise<IBasicResponse<Board>> {
     try {
-      console.log('seq :', seq);
       const board: Board = await this.getOne(seq);
       const searchTags: SearchTag[] = [];
       for (const searchTagSeq of updateData.searchTagSeqs) {
@@ -84,14 +87,22 @@ export class BoardsService {
         }
       }
 
+      const category = await this.categoriesService.getOne(1);
+      board.category = category;
+
+      const regExp = /^(?:https?:\/\/)?(?:www\.)?(?:(?:youtube.com\/(?:(?:watch\?v=)|(?:embed\/))([a-zA-Z0-9-]{11}))|(?:youtu.be\/([a-zA-Z0-9-]{11})))/;
+      const matchVideoId = updateData.videoUrl.match(regExp);
       board.title = updateData.title;
       board.content = updateData.content;
-      board.videoUrl = updateData.videoUrl;
-      board.searchTags = searchTags;
+      (board.videoUrl = matchVideoId
+        ? matchVideoId[1] || matchVideoId[2]
+        : updateData.videoUrl),
+        (board.searchTags = searchTags);
       await board.save();
-
-      return board;
+      const response = BasicResponseFormat(200, '수정되었습니다.', board);
+      return response;
     } catch (error) {
+      console.log(error);
       return;
     }
   }
