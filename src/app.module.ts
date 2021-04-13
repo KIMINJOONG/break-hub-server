@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { BoardsModule } from './boards/boards.module';
 import { SearchTagsModule } from './searchTags/searchTags.module';
 import { CategoriesModule } from './categories/categories.module';
+import { AuthModule } from './auth/auths.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { CategoriesModule } from './categories/categories.module';
     BoardsModule,
     SearchTagsModule,
     CategoriesModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

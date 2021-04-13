@@ -13,7 +13,10 @@ export class User extends BaseEntity {
   seq: number;
 
   @Column()
-  id: string;
+  email: string;
+
+  @Column()
+  name: string;
 
   @Column()
   password: string;

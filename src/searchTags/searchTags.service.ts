@@ -29,17 +29,20 @@ export class SearchTagsService {
   async deleteOne(searchTagSeq: number): Promise<IBasicResponse<SearchTag>> {
     try {
       const searchTag: SearchTag = await this.getOne(searchTagSeq);
-      await searchTag.remove();
-      searchTag.seq = searchTagSeq;
-      const response = BasicResponseFormat(200, '삭제되었습니다', searchTag);
+      const seq = searchTag.seq;
+
+      const result = await searchTag.remove();
+      result.seq = seq;
+      const response = BasicResponseFormat(200, '삭제되었습니다', result);
       return response;
     } catch (error) {}
   }
 
   async create(searchTagData: CreateSearchTagDto): Promise<SearchTag> {
     try {
-      const searchTag: SearchTag = SearchTag.create(searchTagData);
-      searchTag.save();
+      const searchTag: SearchTag = await SearchTag.create({
+        ...searchTagData,
+      }).save();
       return searchTag;
     } catch (error) {
       console.log(error);
@@ -52,7 +55,8 @@ export class SearchTagsService {
     try {
       const searchTag: SearchTag = await this.getOne(searchTagSeq);
       SearchTag.update({ seq: searchTag.seq }, { ...updateData });
-      const response = BasicResponseFormat(200, '수정되었습니다', searchTag);
+      const updatedTag: SearchTag = await this.getOne(searchTagSeq);
+      const response = BasicResponseFormat(200, '수정되었습니다', updatedTag);
       return response;
     } catch (error) {}
   }
