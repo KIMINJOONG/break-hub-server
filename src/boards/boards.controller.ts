@@ -6,7 +6,9 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { IBasicResponse } from 'src/responseData';
 import { Board } from './board.entity';
 import { BoardsService } from './boards.service';
@@ -27,16 +29,19 @@ export class BoardsController {
     return this.boardsService.getOne(seq);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('/:seq')
   remove(@Param('seq') boardSeq: number): Promise<IBasicResponse<Board>> {
     return this.boardsService.deleteOne(boardSeq);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() boardData: CreateBoardDto): Promise<IBasicResponse<Board>> {
     return this.boardsService.create(boardData);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch('/:seq')
   patch(
     @Param('seq') boardSeq: number,

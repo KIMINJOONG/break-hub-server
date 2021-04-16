@@ -7,7 +7,10 @@ import { SearchTag } from './searchTag.entity';
 @Injectable()
 export class SearchTagsService {
   async getAll(): Promise<SearchTag[]> {
-    const searchTags = await SearchTag.find({ relations: ['boards'] });
+    const searchTags = await SearchTag.find({
+      relations: ['boards'],
+      order: { seq: 'DESC' },
+    });
     return searchTags;
   }
 

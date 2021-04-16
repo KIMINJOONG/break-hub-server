@@ -1,8 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/users/user.entity';
 import { JoinDto } from './dto/join.dto';
-import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -33,6 +32,8 @@ export class AuthService {
     const payload = { name: user.name, email: user.email };
     return {
       access_token: this.jwtService.sign(payload),
+      message: '로그인되었습니다.',
+      data: user,
     };
   }
 }

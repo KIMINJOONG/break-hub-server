@@ -16,6 +16,7 @@ export class BoardsService {
   async getAll(): Promise<Board[]> {
     const boards = await Board.find({
       relations: ['searchTags', 'category'],
+      order: { seq: 'DESC' },
     });
     return boards;
   }

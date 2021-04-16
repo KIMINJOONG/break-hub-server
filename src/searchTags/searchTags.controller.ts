@@ -6,7 +6,9 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { IBasicResponse } from 'src/responseData';
 import { CreateSearchTagDto } from './dto/create-searchTags.dto.ts';
 import { UpdateSearchTagDto } from './dto/update-searchTags.dto';
@@ -27,6 +29,7 @@ export class SearchTagsController {
     return this.searchTagsService.getOne(seq);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('/:seq')
   remove(
     @Param('seq') searchTagSeq: number,
@@ -34,11 +37,13 @@ export class SearchTagsController {
     return this.searchTagsService.deleteOne(searchTagSeq);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() searchTagData: CreateSearchTagDto): Promise<SearchTag> {
     return this.searchTagsService.create(searchTagData);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch('/:seq')
   patch(
     @Param('seq') searchTagSeq: number,
